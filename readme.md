@@ -12,9 +12,7 @@ A pure JS template plugin.
 
 
 
-[官方主页](http://www.lightfeel.com/easy/easytemplate/zh-cn/index.jsp '官方主页')
-
-[The official site](http://www.lightfeel.com/easy/easytemplate/zh-cn/index.jsp 'The official site')
+[官方主页](http://www.lightfeel.com/easy/easytemplate/zh-cn/index.jsp '官方主页')         [The official site](http://www.lightfeel.com/easy/easytemplate/zh-cn/index.jsp 'The official site')
 
 ## 结束
 
