@@ -1,6 +1,8 @@
-# EasyTemplate JavaScrpit
+# EasyTemplateJS
 --------------
 
+纯粹的JS模板插件。
+A pure JS template plugin.
 
 - ### [中文](readme-zh.md "中文手册") 
 
