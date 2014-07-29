@@ -10,7 +10,7 @@ Use JS template function can avoid shortcomings of HTML string stitching inconve
 ## 1, Introduction of JS files
 
 ```HTML
-<script type="text/javascript" src="js/easy.template.js"></script>
+<script type="text/javascript" src="js/easy.template.min.js"></script>
 ```
 
 EasyTemplateJS outwardly exposed a group called ** `Et` ** objects, templates used to complete the operation.
@@ -21,7 +21,7 @@ TemplateJS supports three types of templates:
 
 1. output expression:
 
-   `{name}`: insert variables to be output (the role and the JSP `<% = expression%>` identical).
+   `{name}`: insert variables to be output (the role and the JSP `<% = expression%>` identical).JS script <,> and other special symbols can also be used to replace the corresponding character entities.
 
 1. Script expression
 
@@ -45,6 +45,17 @@ TemplateJS supports three types of templates:
  }%
 </div>
 
+ <!-- When you use HTML to define JS template content, if <,>, and other special content, you can use the corresponding character entities instead of -->
+<div style="display: none;" id="myTmpl2">
+%{ 
+	 for(var i=0;i&lt;people.length;i++){  <!-- < use &lt; instead of -->
+}%
+ <li>{i} = { people[i] }</li> 
+ %{ 
+ 	}
+ }%
+</div>
+
 <script type="text/javascript">
     //With the jQuery
     $(function(){
@@ -55,10 +66,15 @@ TemplateJS supports three types of templates:
     		var list = $("#myTmpl").html();  //With the jQuery
     		var res2=Et.template(list, {people: ['moe', 'curly', 'larry']});
     		console.info(res2);
+
+            var list2 = $("#myTmpl2").html();  //With the jQuery
+            //list2="%{ for(var i =0;i<people.length;i++){}% <li>{i} = { people[i] }</li>%{ }}%";
+    		var res3=Et.template(list2, {people: ['moe', 'curly', 'larry']});
+    		console.info(res3);
     		
     		var template = Et.template("<b>{- value }</b>");
-    		var res3=template({value: '<script>'});
-    		console.info(res3);
+    		var res4=template({value: '<script>'});
+    		console.info(res4);
     });
 </script>
 ```
@@ -72,10 +88,50 @@ hello: moe...moe
 <li>1 = curly</li>    
 <li>2 = larry</li>          
 
+<li>0 = moe</li>      
+<li>1 = curly</li>    
+<li>2 = larry</li>    
+
 <b>&lt;script&gt;</b>
 ```
 
-## 4, custom template
+## 4,  Use out output in the JS script template
+
+You can also use out in JavaScript code, and sometimes it would be more convenient than {name} use.
+
+```HTML
+<div style="display: none;" id="myTmpl3">
+%{ 
+	for(var i=0;i&lt;people.length;i++){ <!-- < use &lt; instead of -->
+
+	   out(" <li>"+i+"="+people[i]+"</li> ");
+
+ 	}
+ }%
+</div>
+
+<script type="text/javascript">
+    //With the jQuery
+    $(function(){
+        var list3 = $("#myTmpl3").html();  //With the jQuery
+		var res4=Et.template(list3, {people: ['moe', 'curly', 'larry']});
+		console.info(res4);
+
+        var res6 = Et.template("%{out('Hello:'+name)}%",{name:"JACK"});
+		console.info(res6);
+    });
+</script>
+```
+
+Output:
+
+```HTML
+<li>0=moe</li>  <li>1=curly</li>  <li>2=larry</li> 
+
+Hello:JACK
+```
+
+## 5, custom template
 
 Because some templates to define and execute a block has a special meaning in some languages, so use a template symbol in some pages that caused the error. EasyTemplate allowed to change the template settings, use other symbols to embed code.
 
@@ -96,13 +152,13 @@ Et.tmplSettings={
     escapeOut : /\{-([\s\S]+?)\}/g //转义输出表达式 {-name}
 }
 ```
-## 5, API
+## 6, API
 
 Et exposed to a limited number of API:
 
 - `Et.tmplSettings = {...}`
   
-   Template custom attributes, refer - 4 custom template
+   Template custom attributes, refer - 4, custom template
 
 - `Et.template (text, [data], [settings])`: `string`
   

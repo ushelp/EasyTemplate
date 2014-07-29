@@ -21,15 +21,6 @@
 		'\u2028' : 'u2028',
 		'\u2029' : 'u2029'
 	}, 
-	keys = Object.keys || function(obj) {
-		if (obj !== Object(obj))
-			throw new TypeError('Invalid object');
-		var keys = [];
-		for ( var key in obj)
-			if (_.has(obj, key))
-				keys.push(key);
-		return keys;
-	},
 	entityMap = {
 		escape : {
 			'&' : '&amp;',
@@ -45,6 +36,18 @@
 			'&quot;' : '"',
 			'&#x27;' : "'"
 		}
+	},
+	has = function(obj, key) {
+		return hasOwnProperty.call(obj, key);
+	},
+	keys = Object.keys || function(obj) {
+		if (obj !== Object(obj))
+			throw new TypeError('Invalid object');
+		var keys = [];
+		for ( var key in obj)
+			if (has(obj, key))
+				keys.push(key);
+		return keys;
 	},
 	// Regexes containing the keys and values listed immediately above.
 	entityRegexes = {
@@ -62,19 +65,8 @@
 			}
 		});
 		return obj;
-	}, 
-	has = function(obj, key) {
-		return hasOwnProperty.call(obj, key);
-	}, 
-	keys = Object.keys || function(obj) {
-		if (obj !== Object(obj))
-			throw new TypeError('Invalid object');
-		var keys = [];
-		for ( var key in obj)
-			if (has(obj, key))
-				keys.push(key);
-		return keys;
-	};
+	}
+	;
 	var Et = {
 			// 语句表达式
 		tmplSettings : {
@@ -119,6 +111,7 @@
 			}
 		},
 		template : function(text, data, settings) {
+			text=Et.unescape(text);
 			var render;
 			settings = defaults({}, settings, Et.tmplSettings);
 

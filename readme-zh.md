@@ -10,7 +10,7 @@ EasyTemplateJS是一个纯粹的JS模板插件。能够在JS中使用模板技�
 ## 1. 引入JS文件
 
 ```HTML
-<script type="text/javascript" src="js/easy.template.js"></script>
+<script type="text/javascript" src="js/easy.template.min.js"></script>
 ```
 
 EasyTemplateJS向外暴露了一个名为**`Et`**的对象，用来完成模板操作。
@@ -25,7 +25,7 @@ TemplateJS支持三类模板:
 
 1. 脚本表达式
 
-  `%{ JS Script }%`： 执行任意的 JavaScript 代码（作用JSP的`<% %>`小脚本相同）。
+  `%{ JS Script }%`： 执行任意的 JavaScript 代码（作用JSP的`<% %>`小脚本相同），JS脚本中的<、>等特殊符号，也可使用对应字符实体代替。
 
 1. 转义输出表达式
  
@@ -45,6 +45,17 @@ TemplateJS支持三类模板:
  }%
 </div>
 
+ <!-- 使用HTML定义JS模板内容时，如果有<、>等特殊内容，可以使用对应字符实体代替 -->
+<div style="display: none;" id="myTmpl2">
+%{ 
+	 for(var i=0;i&lt;people.length;i++){  <!-- <使用&lt;代替 -->
+}%
+ <li>{i} = { people[i] }</li> 
+ %{ 
+ 	}
+ }%
+</div>
+
 <script type="text/javascript">
     //借助了jQuery
     $(function(){
@@ -55,10 +66,15 @@ TemplateJS支持三类模板:
     		var list = $("#myTmpl").html();  //借助了jQuery
     		var res2=Et.template(list, {people: ['moe', 'curly', 'larry']});
     		console.info(res2);
+
+            var list2 = $("#myTmpl2").html();  //借助了jQuery
+            //list2="%{ for(var i =0;i<people.length;i++){}% <li>{i} = { people[i] }</li>%{ }}%";
+    		var res3=Et.template(list2, {people: ['moe', 'curly', 'larry']});
+    		console.info(res3);
     		
     		var template = Et.template("<b>{- value }</b>");
-    		var res3=template({value: '<script>'});
-    		console.info(res3);
+    		var res4=template({value: '<script>'});
+    		console.info(res4);
     });
 </script>
 ```
@@ -72,10 +88,50 @@ hello: moe...moe
 <li>1 = curly</li>    
 <li>2 = larry</li>          
 
+<li>0 = moe</li>      
+<li>1 = curly</li>    
+<li>2 = larry</li>    
+
 <b>&lt;script&gt;</b>
 ```
 
-## 4、模板自定义
+## 4. 在模板的JS脚本中使用out输出信息
+
+您也可以在JavaScript代码中使用 out，有时候这会比使用 {name} 更方便。
+
+```HTML
+<div style="display: none;" id="myTmpl3">
+%{ 
+	for(var i=0;i&lt;people.length;i++){  <!-- <使用&lt;代替 -->
+
+	   out(" <li>"+i+"="+people[i]+"</li> ");
+
+ 	}
+ }%
+</div>
+
+<script type="text/javascript">
+    //借助了jQuery
+    $(function(){
+        var list3 = $("#myTmpl3").html();  //借助了jQuery
+		var res4=Et.template(list3, {people: ['moe', 'curly', 'larry']});
+		console.info(res4);
+
+        var res6 = Et.template("%{out('Hello:'+name)}%",{name:"JACK"});
+		console.info(res6);
+    });
+</script>
+```
+
+输出结果：
+
+```HTML
+<li>0=moe</li>  <li>1=curly</li>  <li>2=larry</li> 
+
+Hello:JACK
+```
+
+## 5. 模板自定义
 由于某些模板定义和执行块在某些语言中具有特殊涵义，所以在某些页面中使用模板符号会引起错误。EasyTemplate允许改变模板设置, 使用别的符号来嵌入代码。
 
 Et.tmplSettings默认配置：
@@ -95,13 +151,13 @@ Et.tmplSettings={
     escapeOut : /\{-([\s\S]+?)\}/g //转义输出表达式 {-name}
 }
 ```
-## 5、API
+## 6. API
 
 Et暴露了有限的几个API:
 
 - `Et.tmplSettings ={...}`
   
-  模板自定义属性，参考——4、模板自定义
+  模板自定义属性，参考——4. 模板自定义
 
 - `Et.template(text, [data], [settings])` ：`string`
   

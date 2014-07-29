@@ -434,7 +434,7 @@ li.L9 {
   /* */
 }
  </style>
-
+	
 </head>
 <body>
 <h1 id="easytemplate-javascrpit-templates-plugins-manual">EasyTemplate JavaScrpit Templates Plugins Manual</h1>
@@ -442,13 +442,13 @@ li.L9 {
 <p>Use JS template function can avoid shortcomings of HTML string stitching inconvenience and low maintenance in JS, the use of reverse thinking, JS scripts embedded in HTML, JSP and ASP technologies like the use of the same programming.</p>
 <hr>
 <h2 id="1-introduction-of-js-files">1, Introduction of JS files</h2>
-<pre><code class="lang-HTML">&lt;script type=&quot;text/javascript&quot; src=&quot;js/easy.template.js&quot;&gt;&lt;/script&gt;</code></pre>
+<pre><code class="lang-HTML">&lt;script type=&quot;text/javascript&quot; src=&quot;js/easy.template.min.js&quot;&gt;&lt;/script&gt;</code></pre>
 <p>EasyTemplateJS outwardly exposed a group called <strong> <code>Et</code> </strong> objects, templates used to complete the operation.</p>
 <h2 id="2-templatejs-template-description">2, TemplateJS Template description</h2>
 <p>TemplateJS supports three types of templates:</p>
 <ol>
 <li><p>output expression:</p>
-<p><code>{name}</code>: insert variables to be output (the role and the JSP <code>&lt;% = expression%&gt;</code> identical).</p>
+<p><code>{name}</code>: insert variables to be output (the role and the JSP <code>&lt;% = expression%&gt;</code> identical).JS script &lt;,&gt; and other special symbols can also be used to replace the corresponding character entities.</p>
 </li>
 <li><p>Script expression</p>
 <p><code>% {JS Script}%</code>: execute arbitrary JavaScript code (JSP role of <code>&lt;%%&gt;</code> same small script).</p>
@@ -468,6 +468,17 @@ li.L9 {
  }%
 &lt;/div&gt;
 
+ &lt;!-- When you use HTML to define JS template content, if &lt;,&gt;, and other special content, you can use the corresponding character entities instead of --&gt;
+&lt;div style=&quot;display: none;&quot; id=&quot;myTmpl2&quot;&gt;
+%{ 
+     for(var i=0;i&amp;lt;people.length;i++){  &lt;!-- &lt; use &amp;lt; instead of --&gt;
+}%
+ &lt;li&gt;{i} = { people[i] }&lt;/li&gt; 
+ %{ 
+     }
+ }%
+&lt;/div&gt;
+
 &lt;script type=&quot;text/javascript&quot;&gt;
     //With the jQuery
     $(function(){
@@ -479,9 +490,14 @@ li.L9 {
             var res2=Et.template(list, {people: [&#39;moe&#39;, &#39;curly&#39;, &#39;larry&#39;]});
             console.info(res2);
 
-            var template = Et.template(&quot;&lt;b&gt;{- value }&lt;/b&gt;&quot;);
-            var res3=template({value: &#39;&lt;script&gt;&#39;});
+            var list2 = $(&quot;#myTmpl2&quot;).html();  //With the jQuery
+            //list2=&quot;%{ for(var i =0;i&lt;people.length;i++){}% &lt;li&gt;{i} = { people[i] }&lt;/li&gt;%{ }}%&quot;;
+            var res3=Et.template(list2, {people: [&#39;moe&#39;, &#39;curly&#39;, &#39;larry&#39;]});
             console.info(res3);
+
+            var template = Et.template(&quot;&lt;b&gt;{- value }&lt;/b&gt;&quot;);
+            var res4=template({value: &#39;&lt;script&gt;&#39;});
+            console.info(res4);
     });
 &lt;/script&gt;</code></pre>
 <p>Output:</p>
@@ -491,8 +507,39 @@ li.L9 {
 &lt;li&gt;1 = curly&lt;/li&gt;    
 &lt;li&gt;2 = larry&lt;/li&gt;          
 
+&lt;li&gt;0 = moe&lt;/li&gt;      
+&lt;li&gt;1 = curly&lt;/li&gt;    
+&lt;li&gt;2 = larry&lt;/li&gt;    
+
 &lt;b&gt;&amp;lt;script&amp;gt;&lt;/b&gt;</code></pre>
-<h2 id="4-custom-template">4, custom template</h2>
+<h2 id="4-use-out-output-in-the-js-script-template">4,  Use out output in the JS script template</h2>
+<p>You can also use out in JavaScript code, and sometimes it would be more convenient than {name} use.</p>
+<pre><code class="lang-HTML">&lt;div style=&quot;display: none;&quot; id=&quot;myTmpl3&quot;&gt;
+%{ 
+    for(var i=0;i&amp;lt;people.length;i++){ &lt;!-- &lt; use &amp;lt; instead of --&gt;
+
+       out(&quot; &lt;li&gt;&quot;+i+&quot;=&quot;+people[i]+&quot;&lt;/li&gt; &quot;);
+
+     }
+ }%
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    //With the jQuery
+    $(function(){
+        var list3 = $(&quot;#myTmpl3&quot;).html();  //With the jQuery
+        var res4=Et.template(list3, {people: [&#39;moe&#39;, &#39;curly&#39;, &#39;larry&#39;]});
+        console.info(res4);
+
+        var res6 = Et.template(&quot;%{out(&#39;Hello:&#39;+name)}%&quot;,{name:&quot;JACK&quot;});
+        console.info(res6);
+    });
+&lt;/script&gt;</code></pre>
+<p>Output:</p>
+<pre><code class="lang-HTML">&lt;li&gt;0=moe&lt;/li&gt;  &lt;li&gt;1=curly&lt;/li&gt;  &lt;li&gt;2=larry&lt;/li&gt; 
+
+Hello:JACK</code></pre>
+<h2 id="5-custom-template">5, custom template</h2>
 <p>Because some templates to define and execute a block has a special meaning in some languages, so use a template symbol in some pages that caused the error. EasyTemplate allowed to change the template settings, use other symbols to embed code.</p>
 <p>Et.tmplSettings default configuration:</p>
 <pre><code class="lang-JS">Et.tmplSettings={
@@ -506,11 +553,11 @@ li.L9 {
     script : /\{%([\s\S]+?)%\}/g, //脚本表达式 {% JS script %}
     escapeOut : /\{-([\s\S]+?)\}/g //转义输出表达式 {-name}
 }</code></pre>
-<h2 id="5-api">5, API</h2>
+<h2 id="6-api">6, API</h2>
 <p>Et exposed to a limited number of API:</p>
 <ul>
 <li><p><code>Et.tmplSettings = {...}</code></p>
-<p> Template custom attributes, refer - 4 custom template</p>
+<p> Template custom attributes, refer - 4, custom template</p>
 </li>
 <li><p><code>Et.template (text, [data], [settings])</code>: <code>string</code></p>
 <p> Template plug-core functions<br> <code>text</code>: template string<br> <code>data</code>: Bind to Data Template<br> <code>settings</code>: <code>tmplSettings</code> temporary</p>
@@ -533,7 +580,7 @@ li.L9 {
 <h2 id="end">End</h2>
 <p>If you have more comments, suggestions or ideas, please contact me.</p>
 <p><a href="http://www.lightfeel.com/easy/easytemplate/en/index.jsp#about" title="Comments">Comments</a></p>
-<p>Contact, feedback, custom Email:<a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#58;&#105;&#110;&#x74;&#x68;&#x69;&#110;&#107;&#x63;&#x6f;&#x6c;&#111;&#114;&#64;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#x6d;">&#105;&#110;&#x74;&#x68;&#x69;&#110;&#107;&#x63;&#x6f;&#x6c;&#111;&#114;&#64;&#103;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#x6d;</a></p>
+<p>Contact, feedback, custom Email:<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#x3a;&#x69;&#110;&#116;&#104;&#105;&#110;&#107;&#x63;&#x6f;&#108;&#x6f;&#114;&#64;&#103;&#x6d;&#97;&#x69;&#108;&#46;&#99;&#111;&#109;">&#x69;&#110;&#116;&#104;&#105;&#110;&#107;&#x63;&#x6f;&#108;&#x6f;&#114;&#64;&#103;&#x6d;&#97;&#x69;&#108;&#46;&#99;&#111;&#109;</a></p>
 <p><p></p>
 <p><form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank"></p>
 <p><input type="hidden" name="cmd" value="_xclick"></p>

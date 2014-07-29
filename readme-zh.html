@@ -442,7 +442,7 @@ li.L9 {
 <p>使用JS模板函数能够避免在JS中拼接HTML字符串带来的不便和低维护性的缺点，利用反向思路，在HTML中嵌入JS脚本，就像利用JSP和ASP技术编程一样。</p>
 <hr>
 <h2 id="1-js-">1. 引入JS文件</h2>
-<pre><code class="lang-HTML">&lt;script type=&quot;text/javascript&quot; src=&quot;js/easy.template.js&quot;&gt;&lt;/script&gt;</code></pre>
+<pre><code class="lang-HTML">&lt;script type=&quot;text/javascript&quot; src=&quot;js/easy.template.min.js&quot;&gt;&lt;/script&gt;</code></pre>
 <p>EasyTemplateJS向外暴露了一个名为<strong><code>Et</code></strong>的对象，用来完成模板操作。</p>
 <h2 id="2-templatejs-">2. TemplateJS模板说明</h2>
 <p>TemplateJS支持三类模板:</p>
@@ -451,7 +451,7 @@ li.L9 {
 <p><code>{name}</code>： 插入要输出的变量（作用与JSP的<code>&lt;%=表达式%&gt;</code>相同）。</p>
 </li>
 <li><p>脚本表达式</p>
-<p><code>%{ JS Script }%</code>： 执行任意的 JavaScript 代码（作用JSP的<code>&lt;% %&gt;</code>小脚本相同）。</p>
+<p><code>%{ JS Script }%</code>： 执行任意的 JavaScript 代码（作用JSP的<code>&lt;% %&gt;</code>小脚本相同），JS脚本中的&lt;、&gt;等特殊符号，也可使用对应字符实体代替。</p>
 </li>
 <li><p>转义输出表达式</p>
 <p><code>{-name}</code>： 用法与<code>{name}</code>相同，输出数据时会自动转义特殊字符为字符实体。</p>
@@ -461,6 +461,17 @@ li.L9 {
 <pre><code class="lang-HTML">&lt;div style=&quot;display: none;&quot; id=&quot;myTmpl&quot;&gt;
 %{ 
      for(var i in people){
+}%
+ &lt;li&gt;{i} = { people[i] }&lt;/li&gt; 
+ %{ 
+     }
+ }%
+&lt;/div&gt;
+
+ &lt;!-- 使用HTML定义JS模板内容时，如果有&lt;、&gt;等特殊内容，可以使用对应字符实体代替 --&gt;
+&lt;div style=&quot;display: none;&quot; id=&quot;myTmpl2&quot;&gt;
+%{ 
+     for(var i=0;i&amp;lt;people.length;i++){  &lt;!-- &lt;使用&amp;lt;代替 --&gt;
 }%
  &lt;li&gt;{i} = { people[i] }&lt;/li&gt; 
  %{ 
@@ -479,9 +490,14 @@ li.L9 {
             var res2=Et.template(list, {people: [&#39;moe&#39;, &#39;curly&#39;, &#39;larry&#39;]});
             console.info(res2);
 
-            var template = Et.template(&quot;&lt;b&gt;{- value }&lt;/b&gt;&quot;);
-            var res3=template({value: &#39;&lt;script&gt;&#39;});
+            var list2 = $(&quot;#myTmpl2&quot;).html();  //借助了jQuery
+            //list2=&quot;%{ for(var i =0;i&lt;people.length;i++){}% &lt;li&gt;{i} = { people[i] }&lt;/li&gt;%{ }}%&quot;;
+            var res3=Et.template(list2, {people: [&#39;moe&#39;, &#39;curly&#39;, &#39;larry&#39;]});
             console.info(res3);
+
+            var template = Et.template(&quot;&lt;b&gt;{- value }&lt;/b&gt;&quot;);
+            var res4=template({value: &#39;&lt;script&gt;&#39;});
+            console.info(res4);
     });
 &lt;/script&gt;</code></pre>
 <p>输出结果：</p>
@@ -491,8 +507,39 @@ li.L9 {
 &lt;li&gt;1 = curly&lt;/li&gt;    
 &lt;li&gt;2 = larry&lt;/li&gt;          
 
+&lt;li&gt;0 = moe&lt;/li&gt;      
+&lt;li&gt;1 = curly&lt;/li&gt;    
+&lt;li&gt;2 = larry&lt;/li&gt;    
+
 &lt;b&gt;&amp;lt;script&amp;gt;&lt;/b&gt;</code></pre>
-<h2 id="4-">4、模板自定义</h2>
+<h2 id="4-js-out-">4. 在模板的JS脚本中使用out输出信息</h2>
+<p>您也可以在JavaScript代码中使用 out，有时候这会比使用 {name} 更方便。</p>
+<pre><code class="lang-HTML">&lt;div style=&quot;display: none;&quot; id=&quot;myTmpl3&quot;&gt;
+%{ 
+    for(var i=0;i&amp;lt;people.length;i++){  &lt;!-- &lt;使用&amp;lt;代替 --&gt;
+
+       out(&quot; &lt;li&gt;&quot;+i+&quot;=&quot;+people[i]+&quot;&lt;/li&gt; &quot;);
+
+     }
+ }%
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+    //借助了jQuery
+    $(function(){
+        var list3 = $(&quot;#myTmpl3&quot;).html();  //借助了jQuery
+        var res4=Et.template(list3, {people: [&#39;moe&#39;, &#39;curly&#39;, &#39;larry&#39;]});
+        console.info(res4);
+
+        var res6 = Et.template(&quot;%{out(&#39;Hello:&#39;+name)}%&quot;,{name:&quot;JACK&quot;});
+        console.info(res6);
+    });
+&lt;/script&gt;</code></pre>
+<p>输出结果：</p>
+<pre><code class="lang-HTML">&lt;li&gt;0=moe&lt;/li&gt;  &lt;li&gt;1=curly&lt;/li&gt;  &lt;li&gt;2=larry&lt;/li&gt; 
+
+Hello:JACK</code></pre>
+<h2 id="5-">5. 模板自定义</h2>
 <p>由于某些模板定义和执行块在某些语言中具有特殊涵义，所以在某些页面中使用模板符号会引起错误。EasyTemplate允许改变模板设置, 使用别的符号来嵌入代码。</p>
 <p>Et.tmplSettings默认配置：</p>
 <pre><code class="lang-JS">Et.tmplSettings={
@@ -506,11 +553,11 @@ li.L9 {
     script : /\{%([\s\S]+?)%\}/g, //脚本表达式 {% JS script %}
     escapeOut : /\{-([\s\S]+?)\}/g //转义输出表达式 {-name}
 }</code></pre>
-<h2 id="5-api">5、API</h2>
+<h2 id="6-api">6. API</h2>
 <p>Et暴露了有限的几个API:</p>
 <ul>
 <li><p><code>Et.tmplSettings ={...}</code></p>
-<p>模板自定义属性，参考——4、模板自定义</p>
+<p>模板自定义属性，参考——4. 模板自定义</p>
 </li>
 <li><p><code>Et.template(text, [data], [settings])</code> ：<code>string</code></p>
 <p>模板插件核心函数<br><code>text</code>：模板字符串<br><code>data</code>：绑定到模板的数据<br><code>settings</code>：临时的<code>tmplSettings</code></p>
@@ -533,7 +580,7 @@ li.L9 {
 <h2 id="-">结束</h2>
 <p>如果您有更好意见，建议或想法，请联系我。</p>
 <p><a href="http://www.lightfeel.com/easy/easytemplate/zh-cn/index.jsp#about" title="留言评论">留言评论</a></p>
-<p>联系、反馈、定制Email：<a href="&#x6d;&#97;&#105;&#108;&#x74;&#111;&#58;&#x69;&#110;&#116;&#x68;&#105;&#x6e;&#x6b;&#x63;&#111;&#108;&#111;&#114;&#x40;&#x67;&#x6d;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;">&#x69;&#110;&#116;&#x68;&#105;&#x6e;&#x6b;&#x63;&#111;&#108;&#111;&#114;&#x40;&#x67;&#x6d;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;</a></p>
+<p>联系、反馈、定制Email：<a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#111;&#58;&#x69;&#110;&#x74;&#x68;&#105;&#110;&#x6b;&#99;&#x6f;&#x6c;&#111;&#x72;&#x40;&#103;&#x6d;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#x6d;">&#x69;&#110;&#x74;&#x68;&#105;&#110;&#x6b;&#99;&#x6f;&#x6c;&#111;&#x72;&#x40;&#103;&#x6d;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#x6d;</a></p>
 <p><p><br><strong>支付宝钱包扫一扫捐助：</strong><br></p></p>
 <p>
 
