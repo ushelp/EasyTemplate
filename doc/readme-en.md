@@ -193,7 +193,7 @@ Et exposed to a limited number of API:
 If you have more comments, suggestions or ideas, please contact me.
 
 
-[Comments](http://www.lightfeel.com/easy/easytemplate/en/index.jsp#about 'Comments')
+[Comments](http://www.easyproject.cn/easytemplate/en/index.jsp#about 'Comments')
 
 Contact, feedback, custom Email:<inthinkcolor@gmail.com>
 
@@ -204,6 +204,9 @@ Contact, feedback, custom Email:<inthinkcolor@gmail.com>
 <input type="hidden" name="item_name" value="EasyProject development Donation">
 <input type="hidden" name="no_note" value="1">
 <input type="hidden" name="tax" value="0">
-<input type="image" src="http://www.lightfeel.com/easy/images/paypaldonation5.jpg"  title="PayPal donation"  border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+<input type="image" src="http://www.easyproject.cn/images/paypaldonation5.jpg"  title="PayPal donation"  border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
 </form>
 </P>
+
+
+[http://www.easyproject.cn](http://www.easyproject.cn "EasyProject Home")

@@ -193,10 +193,9 @@ Et暴露了有限的几个API:
 
 如果您有更好意见，建议或想法，请联系我。
 
-[留言评论](http://www.lightfeel.com/easy/easytemplate/zh-cn/index.jsp#about '留言评论')
+[留言评论](http://www.easyproject.cn/easytemplate/zh-cn/index.jsp#about '留言评论')
 
 联系、反馈、定制Email：<inthinkcolor@gmail.com>
-
 
 
 
@@ -205,4 +204,8 @@ Et暴露了有限的几个API:
 </p>
 <p>
 
-<img alt="支付宝钱包扫一扫捐助" src="http://www.lightfeel.com/easy/images/s.png"  title="支付宝钱包扫一扫捐助"  height="256" width="256"></img>
+<img alt="支付宝钱包扫一扫捐助" src="http://www.easyproject.cn/images/s.png"  title="支付宝钱包扫一扫捐助"  height="256" width="256"></img>
+
+
+
+[http://www.easyproject.cn](http://www.easyproject.cn "EasyProject Home")

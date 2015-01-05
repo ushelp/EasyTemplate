@@ -5,14 +5,14 @@
 
 A pure JS template plugin.
 
-- ### [中文手册](readme-zh.md "中文手册") 
+- ### [中文手册](doc/readme-zh.md "中文手册") 
 
 
-- ### [English manual](readme-en.md "English manual") 
+- ### [English manual](doc/readme-en.md "English manual") 
 
 
 
-[官方主页](http://www.lightfeel.com/easy/easytemplate/zh-cn/index.jsp '官方主页')         [The official site](http://www.lightfeel.com/easy/easytemplate/zh-cn/index.jsp 'The official site')
+[官方主页](http://www.easyproject.cn/easytemplate/zh-cn/index.jsp '官方主页')         [The official site](http://www.easyproject.cn/easytemplate/zh-cn/index.jsp 'The official site')
 
 ## 结束
 
@@ -21,4 +21,7 @@ A pure JS template plugin.
 
 联系、反馈、定制、培训 Email：<inthinkcolor@gmail.com>
 
+
+
+[http://www.easyproject.cn](http://www.easyproject.cn "EasyProject Home")
 
