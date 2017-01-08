@@ -1,13 +1,16 @@
-// EasyTemplate
-//
-// Version 1.0.0
-//
-// Copy By RAY
-// inthinkcolor@gmail.com
-// 2014
-//
-// https://github.com/ushelp/EasyTemplate
-//
+/**
+ * EasyTemplate
+ * 
+ * Version 1.2.0
+ * 
+ * http://easyproject.cn 
+ * https://github.com/ushelp
+ * 
+ * Copyright 2013 Ray [ inthinkcolor@gmail.com ]
+ * 
+ * Dependencies: jQuery EasyUI
+ * 
+ */
 (function() {
 	var _Et = window.Et, 
 	noMatch = /(.)^/, 
@@ -110,72 +113,81 @@
 				}
 			}
 		},
+		dataToVars:function(data) {
+				var varArr = Object.keys(data || {}).sort();
+				var vars = ''; 
+				while (varArr.length) {
+					var v = varArr.shift();
+					vars += 'var ' + v + '= obj["' + v + '"];';
+				}
+				return vars;
+		},
 		template : function(text, data, settings) {
 			text=Et.unescape(text);
 			var render;
 			settings = defaults({}, settings, Et.tmplSettings);
-
-			// Combine delimiters into one regular expression via alternation.
 			var matcher = new RegExp([ (settings.escapeOut || noMatch).source,
 					(settings.out || noMatch).source,
 					(settings.script || noMatch).source ].join('|')
 					+ '|$', 'g');
-			// Compile the template source, escaping string literals
-			// appropriately.
+
 			var index = 0;
-			var source = "__p+='";
+			var source = "_p+='";
 			text.replace(matcher, function(match, escapeOut, out,
 					script, offset) {
 				source += text.slice(index, offset).replace(escaper,
 						function(match) {
 							return '\\' + escapes[match];
 						});
-
 				if (escapeOut) {
-					source += "'+\n((__t=(" + escapeOut
-							+ "))==null?'':Et.escape(__t))+\n'";
+					source += "'+((_t=(" + escapeOut+ "))==null?'':Et.escape(_t))+'";
 				}
 				if (out) {
-					source += "'+\n((__t=(" + out
-							+ "))==null?'':__t)+\n'";
+					//source += "'+((_t=(" + out+ "))==null?'':_t)+'";
+					source += "'+"+out+"+'";
 				}
 				if (script) {
-					source += "';\n" + script + "\n__p+='";
+					source += "';" + script + "_p+='";
 				}
 				index = offset + match.length;
 				return match;
 			});
-			source += "';\n";
+			source += "';";
+			source = "var _p='',out=function(){_p+=Array.prototype.join.call(arguments, '')};"
+					+ source + "return _p";
+			
+			cache={};
 
-			// If a variable is not specified, place data values in local scope.
-			if (!settings.variable)
-				source = 'with(obj||{}){\n' + source + '}\n';
-
-			source = "var __t,__p='',__j=Array.prototype.join,"
-					+ "out=function(){__p+=__j.call(arguments,'');};\n"
-					+ source + "return __p;\n";
-
-			try {
-				render = new Function(settings.variable || 'obj', 'Et', source);
-			} catch (e) {
-				e.source = source;
-				console.info(e);
-				console.info(source);
-				
-				throw e;
+			if (data){
+				var vars=Et.dataToVars(data);
+				var render;
+				cache[text] = cache[text] || {};
+				if(cache[text].v===vars){
+					render=cache[text].f;
+				}else{
+					render = new Function('obj', 'Et', vars+source);	
+					cache[text].v=vars;
+					cache[text].f=render;		
+				}
+				return render(data, Et);	
 			}
-
-			if (data)
-				return render(data, Et);
+				
 			var template = function(data) {
-				return render.call(this, data, Et);
+				var vars=Et.dataToVars(data);
+				var render;
+				cache[text] = cache[text] || {};
+				if(cache[text].v===vars){
+					render=cache[text].f;
+				}else{
+					render = new Function('obj', 'Et', vars+source);	
+					cache[text].v=vars;
+					cache[text].f=render;		
+				}
+				return render(data, Et);	
+				//return render.call(this, data, Et);
 			};
 
-			// Provide the compiled function source as a convenience for
-			// precompilation.
-			template.source = 'function(' + (settings.variable || 'obj')
-					+ '){\n' + source + '}';
-
+			//template.source = 'function(obj){' + source + '}';
 			return template;
 		},
 		noConflict : function() {
