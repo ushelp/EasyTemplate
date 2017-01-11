@@ -5,7 +5,7 @@
 
 JavaScript 模板引擎作为数据与界面分离工作中最重要一环。使用 JavaScript 模板函数能够避免在 JavaScript 中拼接 `HTML` 字符串带来的不便和低维护性的缺点，利用反向思路，在 `HTML` 中嵌入 JavaScript 脚本，就像利用 `JSP` 和 `ASP` 技术编程一样。EasyTemplate 能够提供超高性能的渲染引擎，在 JavaScript 中使用模板技术来简化操作，并增强程序设计的灵活性。
 
-The latest version: `2.0.0-RELEASE`
+The latest version: `2.1.0-RELEASE`
 
 
 ## 特点
@@ -20,6 +20,8 @@ The latest version: `2.0.0-RELEASE`
 
 - 支持 out 输出
 
+- 模块化支持：`CommonJS`, `AMD`, `CMD`, `Node.js`
+
 
 ## Performance test comparison/性能测试对比
 
@@ -33,7 +35,7 @@ The latest version: `2.0.0-RELEASE`
 ### 1. 引入JS文件
 
 ```HTML
-<script type="text/javascript" src="easy.templatejs.min-2.0.0.js"></script>
+<script type="text/javascript" src="easy.templatejs.min-2.1.0.js"></script>
 ```
 
 ### 2. TemplateJS 模板表达式
@@ -333,6 +335,33 @@ console.info(
 	Et.noConflict();
 	```
    
+
+## 模块化支持
+
+- AMD Example
+	```JS
+	require.config({
+		// 指定模块id 和其对应文件的相对路径
+		paths: {
+			Et: "js/easy.templatejs.min-2.1.0"
+		}
+	});
+
+	require(["Et"], function(Et) {
+		// Basic demo
+		var compiled = Et.template("hello: { name }, {-name}");
+		var res = compiled({
+			name: 'MoMo'
+		});
+		var res2 = compiled({
+			name: '<MoMo>'
+		}); // Special label, test escape
+		
+		console.info(res);
+		console.info(res2);
+	});
+	```
+
 
 
 ## 结束

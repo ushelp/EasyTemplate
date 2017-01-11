@@ -4,7 +4,7 @@
 
 **EasyTemplateJS(EasyTemplate JavaScript) is a small, pure, high-performance JavaScript template engine.**
 
-The latest version: `2.0.0-RELEASE`
+The latest version: `2.1.0-RELEASE`
 
 ## Feature/特点
 
@@ -19,6 +19,8 @@ The latest version: `2.0.0-RELEASE`
 	- 支持转义输出表达式
 	
 	- 支持 out 输出
+	
+	- 模块化支持：`CommonJS`, `AMD`, `CMD`, `Node.js`
 
 - **English**
 
@@ -31,6 +33,8 @@ The latest version: `2.0.0-RELEASE`
 	- Escape output expressions are supported
 	
 	- Support out output
+	
+	- Module support:`CommonJS`, `AMD`, `CMD`, `Node.js`
 
 
 ## Performance test comparison/性能测试对比

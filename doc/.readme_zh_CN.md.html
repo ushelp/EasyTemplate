@@ -642,7 +642,7 @@ function setDocumentScrollTop(ypos)
 <h1> <a id="easytemplatejs-模板引擎使用手册" class="anchor" href="#easytemplatejs-%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>EasyTemplateJS 模板引擎使用手册</h1> 
 <p><strong>EasyTemplateJS（EasyTemplate JavaScript）是一款小巧，纯粹，高性能的 JavaScript 模板引擎。</strong></p> 
 <p>JavaScript 模板引擎作为数据与界面分离工作中最重要一环。使用 JavaScript 模板函数能够避免在 JavaScript 中拼接 <code>HTML</code> 字符串带来的不便和低维护性的缺点，利用反向思路，在 <code>HTML</code> 中嵌入 JavaScript 脚本，就像利用 <code>JSP</code> 和 <code>ASP</code> 技术编程一样。EasyTemplate 能够提供超高性能的渲染引擎，在 JavaScript 中使用模板技术来简化操作，并增强程序设计的灵活性。</p> 
-<p>The latest version: <code>2.0.0-RELEASE</code></p> 
+<p>The latest version: <code>2.1.0-RELEASE</code></p> 
 <h2> <a id="特点" class="anchor" href="#%E7%89%B9%E7%82%B9" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>特点</h2> 
 <ul> 
  <li><p>小巧，纯粹</p></li> 
@@ -650,6 +650,7 @@ function setDocumentScrollTop(ypos)
  <li><p>灵活自定义</p></li> 
  <li><p>支持转义输出表达式</p></li> 
  <li><p>支持 out 输出</p></li> 
+ <li><p>模块化支持：<code>CommonJS</code>, <code>AMD</code>, <code>CMD</code>, <code>Node.js</code></p></li> 
 </ul> 
 <h2> <a id="performance-test-comparison性能测试对比" class="anchor" href="#performance-test-comparison%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AF%B9%E6%AF%94" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Performance test comparison/性能测试对比</h2> 
 <p>从渲染性能上来说， <strong>EasyTemplateJS</strong> 和 artTemplate 都是使用预先静态编译原理，可以说已经接近的性能极限，是当前性能最高的模板引擎。一些实现较差的引擎不仅可能影响客户体验，还会会引起浏览器崩溃或异常终止，百度的引擎则性能较差，对浏览器渲染执行影响巨大。</p> 
@@ -657,7 +658,7 @@ function setDocumentScrollTop(ypos)
 <h2> <a id="使用" class="anchor" href="#%E4%BD%BF%E7%94%A8" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>使用</h2> 
 <h3> <a id="1-引入js文件" class="anchor" href="#1-%E5%BC%95%E5%85%A5js%E6%96%87%E4%BB%B6" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. 引入JS文件</h3> 
 <div class="highlight highlight-text-html-basic">
- <pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>text/javascript<span class="pl-pds">&quot;</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>easy.templatejs.min-2.0.0.js<span class="pl-pds">&quot;</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre>
+ <pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>text/javascript<span class="pl-pds">&quot;</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>easy.templatejs.min-2.1.0.js<span class="pl-pds">&quot;</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre>
 </div> 
 <h3> <a id="2-templatejs-模板表达式" class="anchor" href="#2-templatejs-%E6%A8%A1%E6%9D%BF%E8%A1%A8%E8%BE%BE%E5%BC%8F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. TemplateJS 模板表达式</h3> 
 <p>TemplateJS 支持三类模板表达式，表达式不允许嵌套或交叉:</p> 
@@ -903,6 +904,32 @@ function setDocumentScrollTop(ypos)
 <span class="pl-c"> * <span class="pl-k">@return</span> <span class="pl-en">{Et}</span> Et 对象</span>
 <span class="pl-c"> <span class="pl-c">*/</span></span>
 <span class="pl-smi">Et</span>.<span class="pl-en">noConflict</span>();</pre>
+  </div> </li> 
+</ul> 
+<h2> <a id="模块化支持" class="anchor" href="#%E6%A8%A1%E5%9D%97%E5%8C%96%E6%94%AF%E6%8C%81" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>模块化支持</h2> 
+<ul> 
+ <li> <p>AMD Example</p> 
+  <div class="highlight highlight-source-js">
+   <pre><span class="pl-smi">require</span>.<span class="pl-en">config</span>({
+    <span class="pl-c"><span class="pl-c">//</span> 指定模块id 和其对应文件的相对路径</span>
+    paths<span class="pl-k">:</span> {
+        Et<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">&quot;</span>js/easy.templatejs.min-2.1.0<span class="pl-pds">&quot;</span></span>
+    }
+});
+
+<span class="pl-c1">require</span>([<span class="pl-s"><span class="pl-pds">&quot;</span>Et<span class="pl-pds">&quot;</span></span>], <span class="pl-k">function</span>(<span class="pl-smi">Et</span>) {
+    <span class="pl-c"><span class="pl-c">//</span> Basic demo</span>
+    <span class="pl-k">var</span> compiled <span class="pl-k">=</span> <span class="pl-smi">Et</span>.<span class="pl-en">template</span>(<span class="pl-s"><span class="pl-pds">&quot;</span>hello: { name }, {-name}<span class="pl-pds">&quot;</span></span>);
+    <span class="pl-k">var</span> res <span class="pl-k">=</span> <span class="pl-en">compiled</span>({
+        name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>MoMo<span class="pl-pds">'</span></span>
+    });
+    <span class="pl-k">var</span> res2 <span class="pl-k">=</span> <span class="pl-en">compiled</span>({
+        name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>&lt;MoMo&gt;<span class="pl-pds">'</span></span>
+    }); <span class="pl-c"><span class="pl-c">//</span> Special label, test escape</span>
+
+    <span class="pl-en">console</span>.<span class="pl-c1">info</span>(res);
+    <span class="pl-en">console</span>.<span class="pl-c1">info</span>(res2);
+});</pre>
   </div> </li> 
 </ul> 
 <h2> <a id="结束" class="anchor" href="#%E7%BB%93%E6%9D%9F" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>结束</h2> 

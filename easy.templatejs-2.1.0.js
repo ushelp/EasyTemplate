@@ -1,17 +1,41 @@
 /**
  * EasyTemplate
  * 
- * Version 2.0.0
+ * Version 2.1.0
  * 
  * http://easyproject.cn 
  * https://github.com/ushelp
  * 
  * Copyright 2012 Ray [ inthinkcolor@gmail.com ]
+ * Released under the MIT license
  * 
- * Dependencies: jQuery EasyUI
+ * [Support AMD, CMD, CommonJS, Node.js]
  * 
  */
-(function() {
+;(function(){
+	
+	// 启用严格模式
+	"use strict";
+	
+	// 自定义局部 undefined 变量
+	var undefined;          
+	
+	/** Node.js global 检测. */
+	var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+	/** `self` 变量检测. */
+	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+	/** 全局对象检测. */
+	var root = freeGlobal || freeSelf || Function('return this')();
+	
+	/** `exports` 变量检测. */
+	var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
+
+	/** `module` 变量检测. */
+	var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
+	
+	// 其他变量，函数定义...
 	var _Et = window.Et,
 		noMatch = /(.)^/,
 		escaper = /\\|'|\r|\n|\t|\u2028|\u2029/g,
@@ -98,7 +122,15 @@
 			return vars;
 		},
 		cacheTmplSettings;
-		
+	
+	/*--------------------------------------------------------------------------*/
+	
+	// Do your work...
+	
+	// 保存现场
+	var _Et = root.Et;
+	
+	// 核心对象
 	var Et = {
 		// 模板标签表达式
 		tmplSettings: {
@@ -237,13 +269,37 @@
 		 * @return {Et} Et 对象
  		 */
 		noConflict: function() {
-			if(window.Et === Et) {
-				window.Et = _Et;
+			if(root.Et === Et) {
+				root.Et = _Et;
 			}
 			return Et;
 		}
 	};
-	// 注册对外的命名空间
-	window.Et = Et;
-	return Et;
-})();
+
+	/*--------------------------------------------------------------------------*/
+	// Export Et
+	
+	// AMD 和 CMD 兼容，定义模块
+	if (typeof define == 'function' && (define.amd || define.cmd)) {
+		
+		// 1. 定义匿名模块
+		define([], function() {
+			return Et;
+		});
+		
+		// 2. 定义命名模块
+//		define("Et", [], function() {
+//			return Et;
+//		});
+	}
+	// CommonJS 兼容（包含NodeJS）
+	else if(freeModule) {
+		// Node.js 兼容.
+		(freeModule.exports = Et).Et = Et;
+		// 其他 CommonJS 兼容.
+		freeExports.Et = Et;
+	} else {
+        // 非模块应用兼容，导出全局对象
+		root.Et = Et;
+   }
+}.call(this));
