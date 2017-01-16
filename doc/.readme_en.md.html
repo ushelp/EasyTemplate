@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>C:\Users\easyp\Documents\HBuilderProjects\demo\doc\.readme_en.md.html</title>
+<title>C:\Users\easyp\Documents\HBuilderProjects\easytemplate\doc\.readme_en.md.html</title>
 
 
 <style type="text/css">
@@ -642,7 +642,7 @@ function setDocumentScrollTop(ypos)
 <h1> <a id="easytemplatejs-template-engine-user-guide" class="anchor" href="#easytemplatejs-template-engine-user-guide" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>EasyTemplateJS Template Engine User Guide</h1> 
 <p><strong>EasyTemplateJS(EasyTemplate JavaScript) is a small, pure, high-performance JavaScript template engine.</strong></p> 
 <p>JavaScript template engine as the data and interface separation of the most important part. Using JavaScript template functions to avoid the inconvenience and low maintenance of splicing <code>HTML</code> strings in JavaScript, embedding JavaScript scripts in<code>HTML</code> as opposed to using <code>JSP</code> and<code>ASP</code> Technical programming. EasyTemplate provides an ultra-high-performance rendering engine that uses template technology in JavaScript to simplify operations and enhance program design flexibility.</p> 
-<p>The latest version: <code>2.1.0-RELEASE</code></p> 
+<p>The latest version: <code>2.1.1-RELEASE</code></p> 
 <h2> <a id="feature" class="anchor" href="#feature" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Feature</h2> 
 <ul> 
  <li><p>Small, pure</p></li> 
@@ -651,15 +651,26 @@ function setDocumentScrollTop(ypos)
  <li><p>Escape output expressions are supported</p></li> 
  <li><p>Support out output</p></li> 
  <li><p>Module support:<code>CommonJS</code>, <code>AMD</code>, <code>CMD</code>, <code>Node.js</code></p></li> 
+ <li><p>Bower support</p></li> 
 </ul> 
 <h2> <a id="performance-test-comparison" class="anchor" href="#performance-test-comparison" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Performance test comparison</h2> 
 <p>From the rendering performance, <strong>EasyTemplate</strong> and artTemplate are using pre-static compilation principle, can be said to have close to the performance limit, is the highest performance of the template engine. Some poor engine may not only affect the customer experience, but also cause the browser to crash or abnormal termination, Baidu engine performance is poor, the implementation of the browser rendering a huge impact.</p> 
 <p><a href="imgs/performance.png" target="_blank"><img src="imgs/performance.png" alt="Performance test comparison" style="max-width:100%;" /></a></p> 
 <h2> <a id="use" class="anchor" href="#use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use</h2> 
 <h3> <a id="1-download" class="anchor" href="#1-download" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Download</h3> 
-<div class="highlight highlight-text-html-basic">
- <pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>text/javascript<span class="pl-pds">&quot;</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>easy.templatejs.min-2.1.0.js<span class="pl-pds">&quot;</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre>
-</div> 
+<ul> 
+ <li> <p>Download, install</p> 
+  <div class="highlight highlight-text-html-basic">
+   <pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>text/javascript<span class="pl-pds">&quot;</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>easy.templatejs.min.js<span class="pl-pds">&quot;</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre>
+  </div> </li> 
+ <li> <p>Bower install</p> 
+  <div class="highlight highlight-source-shell">
+   <pre>bower install easytemplatejs --save</pre>
+  </div> 
+  <div class="highlight highlight-text-html-basic">
+   <pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>bower_components/easytemplate/dist/easy.templatejs.min.js<span class="pl-pds">&quot;</span></span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>text/javascript<span class="pl-pds">&quot;</span></span> <span class="pl-e">charset</span>=<span class="pl-s"><span class="pl-pds">&quot;</span>utf-8<span class="pl-pds">&quot;</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre>
+  </div> </li> 
+</ul> 
 <h3> <a id="2-templatejs-template-expression" class="anchor" href="#2-templatejs-template-expression" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. TemplateJS Template expression</h3> 
 <p>TemplateJS supports three types of template expressions, which do not allow nesting or crossover:</p> 
 <ol> 
@@ -911,7 +922,7 @@ function setDocumentScrollTop(ypos)
   <div class="highlight highlight-source-js">
    <pre><span class="pl-smi">require</span>.<span class="pl-en">config</span>({
     paths<span class="pl-k">:</span> {
-        Et<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">&quot;</span>js/easy.templatejs.min-2.1.0<span class="pl-pds">&quot;</span></span>
+        Et<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">&quot;</span>js/easy.templatejs.min-2.1.1<span class="pl-pds">&quot;</span></span>
     }
 });
 
